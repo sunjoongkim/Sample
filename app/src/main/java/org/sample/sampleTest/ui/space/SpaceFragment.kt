@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
@@ -32,6 +33,7 @@ class SpaceFragment : Fragment() {
     private var _binding: FragmentSpaceBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var recyclerView: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,6 +46,8 @@ class SpaceFragment : Fragment() {
         _binding = FragmentSpaceBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        recyclerView = binding.horizontalRecyclerView
+
         RetrofitBuilder.api.getSpaceList("VWV3ZTU1WEtUSWY2R29XOW0za3Fpb0JLbzRrR2FPdEY5TzdPYVFJUGZhcz0", "20","")
             .enqueue(object : Callback<Space>{
 
@@ -55,10 +59,7 @@ class SpaceFragment : Fragment() {
 
                     val data : List<Data> = response.body()!!.data
 
-                    binding.horizontalRecyclerView.adapter = SpaceAdapter(data)
-
-
-
+                    binding.horizontalRecyclerView.adapter = SpaceAdapter(data, recyclerView)
                 }
 
                 override fun onFailure(call: Call<Space>, t: Throwable) {
@@ -80,7 +81,7 @@ class SpaceFragment : Fragment() {
     }
 
     // 리스트 Adapter
-    private class SpaceAdapter(private val dataList: List<Data>) :
+    private class SpaceAdapter(private val dataList: List<Data>,  private val recyclerView: RecyclerView) :
         RecyclerView.Adapter<SpaceAdapter.ViewHolder>() {
 
         class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -117,6 +118,20 @@ class SpaceFragment : Fragment() {
                 btnExitWeb.setOnClickListener {
                     webView.visibility = View.INVISIBLE
                     btnExitWeb.visibility = View.INVISIBLE
+                }
+
+                webView.setOnTouchListener { _, event ->
+                    when (event.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            // 터치가 시작될 때 RecyclerView에게 터치 이벤트 중재를 금지하도록 요청
+                            recyclerView.requestDisallowInterceptTouchEvent(true)
+                        }
+                        MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                            // 터치가 종료되거나 취소될 때 중재 금지 요청을 해제
+                            recyclerView.requestDisallowInterceptTouchEvent(false)
+                        }
+                    }
+                    false
                 }
 
                 webView.webViewClient = WebViewClient()
