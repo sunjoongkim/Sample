@@ -48,7 +48,7 @@ class SpaceFragment : Fragment() {
 
         recyclerView = binding.horizontalRecyclerView
 
-        RetrofitBuilder.api.getSpaceList("VWV3ZTU1WEtUSWY2R29XOW0za3Fpb0JLbzRrR2FPdEY5TzdPYVFJUGZhcz0", "20","")
+        RetrofitBuilder.api.getSpaceList("VWV3ZTU1WEtUSWY2R29XOW0za3Fpb0JLbzRrR2FPdEY5TzdPYVFJUGZhcz0", "3","")
             .enqueue(object : Callback<Space>{
 
                 override fun onResponse(
