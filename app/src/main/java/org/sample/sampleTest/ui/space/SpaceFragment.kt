@@ -17,6 +17,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import org.sample.sampleTest.R
 import org.sample.sampleTest.data.Data
@@ -33,7 +34,7 @@ class SpaceFragment : Fragment() {
     private var _binding: FragmentSpaceBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var pagerView: ViewPager2
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,8 +47,28 @@ class SpaceFragment : Fragment() {
         _binding = FragmentSpaceBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        recyclerView = binding.horizontalRecyclerView
+        pagerView = binding.horizontalPagerView
 
+        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        imm?.hideSoftInputFromWindow(root.windowToken, 0)
+
+        return root
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // 화면 진입할때 초기화
+        pagerView.currentItem = 0
+        initPagerAdapter()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun initPagerAdapter() {
         RetrofitBuilder.api.getSpaceList("VWV3ZTU1WEtUSWY2R29XOW0za3Fpb0JLbzRrR2FPdEY5TzdPYVFJUGZhcz0", "3","")
             .enqueue(object : Callback<Space>{
 
@@ -59,7 +80,7 @@ class SpaceFragment : Fragment() {
 
                     val data : List<Data> = response.body()!!.data
 
-                    binding.horizontalRecyclerView.adapter = SpaceAdapter(data, recyclerView)
+                    binding.horizontalPagerView.adapter = SpaceAdapter(data, pagerView)
                 }
 
                 override fun onFailure(call: Call<Space>, t: Throwable) {
@@ -67,21 +88,10 @@ class SpaceFragment : Fragment() {
                 }
 
             })
-
-        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-        imm?.hideSoftInputFromWindow(root.windowToken, 0)
-
-        return root
-    }
-
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     // 리스트 Adapter
-    private class SpaceAdapter(private val dataList: List<Data>,  private val recyclerView: RecyclerView) :
+    private class SpaceAdapter(private val dataList: List<Data>,  private val pagerView: ViewPager2) :
         RecyclerView.Adapter<SpaceAdapter.ViewHolder>() {
 
         class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -124,13 +134,13 @@ class SpaceFragment : Fragment() {
                 // webview 화면에서 리스트 스크롤 되지 않도록 하는 리스너
                 webView.setOnTouchListener { _, event ->
                     when (event.action) {
-                        MotionEvent.ACTION_DOWN -> {
-                            // 터치가 시작될 때 RecyclerView에게 터치 이벤트 전달하지 않음
-                            recyclerView.requestDisallowInterceptTouchEvent(true)
+                        MotionEvent.ACTION_MOVE -> {
+                            // webview 드래그중엔 터치 이벤트 전달 금지
+                            pagerView.isUserInputEnabled = false
                         }
                         MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                             // 터치가 종료되거나 취소될 때 터치 이벤트 전달 금지 해제
-                            recyclerView.requestDisallowInterceptTouchEvent(false)
+                            pagerView.isUserInputEnabled = true
                         }
                     }
                     false

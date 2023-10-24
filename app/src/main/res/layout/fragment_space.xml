@@ -5,8 +5,8 @@
     android:layout_height="match_parent">
 
     <!-- Horizontal RecyclerView -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/horizontalRecyclerView"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/horizontal_pager_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
