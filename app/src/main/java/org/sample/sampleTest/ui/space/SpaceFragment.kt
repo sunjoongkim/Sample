@@ -115,25 +115,28 @@ class SpaceFragment : Fragment() {
                 val webView = holder.webView
                 val btnExitWeb = holder.btnExitWeb
 
+                // back 버튼 클릭시 웹뷰, 백버튼 안보이게 함
                 btnExitWeb.setOnClickListener {
                     webView.visibility = View.INVISIBLE
                     btnExitWeb.visibility = View.INVISIBLE
                 }
 
+                // webview 화면에서 리스트 스크롤 되지 않도록 하는 리스너
                 webView.setOnTouchListener { _, event ->
                     when (event.action) {
                         MotionEvent.ACTION_DOWN -> {
-                            // 터치가 시작될 때 RecyclerView에게 터치 이벤트 중재를 금지하도록 요청
+                            // 터치가 시작될 때 RecyclerView에게 터치 이벤트 전달하지 않음
                             recyclerView.requestDisallowInterceptTouchEvent(true)
                         }
                         MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                            // 터치가 종료되거나 취소될 때 중재 금지 요청을 해제
+                            // 터치가 종료되거나 취소될 때 터치 이벤트 전달 금지 해제
                             recyclerView.requestDisallowInterceptTouchEvent(false)
                         }
                     }
                     false
                 }
 
+                // web view 구현부, 3D 렌더링을 위한 세팅값 추가
                 webView.webViewClient = WebViewClient()
                 val webSettings: WebSettings = webView.settings
                 webSettings.javaScriptEnabled = true
@@ -141,6 +144,7 @@ class SpaceFragment : Fragment() {
 
                 webView.loadUrl(data.space_url)
 
+                // 이미지 클릭시 웹뷰, 백버튼 보이게함
                 webView.visibility = View.VISIBLE
                 btnExitWeb.visibility = View.VISIBLE
             }
