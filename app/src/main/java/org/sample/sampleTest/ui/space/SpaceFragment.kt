@@ -131,6 +131,12 @@ class SpaceFragment : Fragment() {
         })
     }
 
+    private fun showBottomSheet(buttonText: String) {
+        val bottomSheetFragment = BottomSheetView()
+        bottomSheetFragment.buttonText = buttonText
+        bottomSheetFragment.show(requireFragmentManager(), bottomSheetFragment.tag)
+    }
+
     // 리스트 Adapter
     private class SpaceAdapter(private val dataList: MutableList<Data>,  private val pagerView: ViewPager2, private val showBottomSheet: (String) -> Unit) :
         RecyclerView.Adapter<SpaceAdapter.ViewHolder>() {
@@ -213,11 +219,5 @@ class SpaceFragment : Fragment() {
             dataList.addAll(newData)
             notifyDataSetChanged()
         }
-    }
-
-    private fun showBottomSheet(buttonText: String) {
-        val bottomSheetFragment = BottomSheetView()
-        bottomSheetFragment.buttonText = buttonText
-        bottomSheetFragment.show(requireFragmentManager(), bottomSheetFragment.tag)
     }
 }
