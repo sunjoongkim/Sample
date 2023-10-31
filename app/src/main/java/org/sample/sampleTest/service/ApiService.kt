@@ -1,7 +1,7 @@
 package org.sample.sampleTest.service
 
 import org.sample.sampleTest.data.Space
-import org.sample.sampleTest.data.SpaceContentList
+import org.sample.sampleTest.data.SpaceContent
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -14,15 +14,15 @@ interface ApiService {
     fun getSpaceList(
         @Header("x-selvers-api-v2-access-token") key: String,
         @Query("page") page: String,
-        @Query("member_id") member_id: String
+        @Query("member_id") memberId: String
     ): Call<Space>
 
     // 컨텐츠 리스트
     @GET("/api/space/spaceContentList.json")
     fun getSpaceContentList(
         @Header("x-selvers-api-v2-access-token") key: String,
-        @Query("space_id") page: String,
-        @Query("member_id") member_id: String
-    ) : Call<SpaceContentList>
+        @Query("space_id") spaceId: String,
+        @Query("member_id") memberId: String
+    ) : Call<SpaceContent>
 
 }
