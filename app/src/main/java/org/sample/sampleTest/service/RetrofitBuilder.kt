@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitBuilder {
     val BASE_URL = "http://selfood.iptime.org:86"
 
-    var api: ApiService
+    var apiService: ApiService
 
     init {
         val retrofit = Retrofit.Builder()
@@ -14,6 +14,6 @@ object RetrofitBuilder {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-        api = retrofit.create(ApiService::class.java)
+        apiService = retrofit.create(ApiService::class.java)
     }
 }

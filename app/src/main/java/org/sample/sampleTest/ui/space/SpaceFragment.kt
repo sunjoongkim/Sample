@@ -20,9 +20,12 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import org.sample.sampleTest.R
+import org.sample.sampleTest.data.ContentList
 import org.sample.sampleTest.data.Data
 import org.sample.sampleTest.data.Space
+import org.sample.sampleTest.data.SpaceContentList
 import org.sample.sampleTest.databinding.FragmentSpaceBinding
+import org.sample.sampleTest.service.AndroidBridge
 import org.sample.sampleTest.service.RetrofitBuilder
 import org.sample.sampleTest.ui.BottomSheetView
 import retrofit2.Call
@@ -41,6 +44,8 @@ class SpaceFragment : Fragment() {
     private var totalPage = 0
     private var currentPage = 0
     private var isLoading = false
+
+    private var token = "VWV3ZTU1WEtUSWY2R29XOW0za3Fpb0JLbzRrR2FPdEY5TzdPYVFJUGZhcz0"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -83,7 +88,7 @@ class SpaceFragment : Fragment() {
 
         Log.e("@@@@@", "currentPage : $currentPage")
         // 현재 페이지를 읽어옴
-        RetrofitBuilder.api.getSpaceList("VWV3ZTU1WEtUSWY2R29XOW0za3Fpb0JLbzRrR2FPdEY5TzdPYVFJUGZhcz0", currentPage.toString(),"")
+        RetrofitBuilder.apiService.getSpaceList(token, currentPage.toString(),"")
             .enqueue(object : Callback<Space>{
 
                 override fun onResponse(
@@ -116,6 +121,8 @@ class SpaceFragment : Fragment() {
                 }
 
             })
+
+
     }
 
     private fun initPagerCallback() {
@@ -171,6 +178,7 @@ class SpaceFragment : Fragment() {
                 showBottomSheet(data.space_name)
             }
 
+
             holder.imageViewSpace.setOnClickListener {
 
                 val webView = holder.webView
@@ -197,11 +205,16 @@ class SpaceFragment : Fragment() {
                     false
                 }
 
+
                 // web view 구현부, 3D 렌더링을 위한 세팅값 추가
                 webView.webViewClient = WebViewClient()
                 val webSettings: WebSettings = webView.settings
                 webSettings.javaScriptEnabled = true
                 webSettings.domStorageEnabled = true
+
+                // 웹뷰 브릿지
+                webView.addJavascriptInterface(AndroidBridge() , "spaceHandler")
+
 
                 webView.loadUrl(data.space_url)
 
