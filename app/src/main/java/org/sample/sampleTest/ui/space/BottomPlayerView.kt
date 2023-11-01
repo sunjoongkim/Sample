@@ -51,19 +51,22 @@ class BottomPlayerView : BottomSheetDialogFragment() {
         videoView?.addYouTubePlayerListener(object: AbstractYouTubePlayerListener() {
             override fun onReady(youTubePlayer: YouTubePlayer) {
                 this@BottomPlayerView.youTubePlayer = youTubePlayer
-                playYoutube()
+                playByType()
             }
         })
 
         // 리스트 생성시 playList와 리스트 선택시 재생을 위한 playByType 함수 전달
-        recyclerView?.layoutManager = GridLayoutManager(context, 1, GridLayoutManager.HORIZONTAL, false)
+        recyclerView?.layoutManager = GridLayoutManager(context, 3)
         recyclerView?.adapter = PlayListAdapter(playList, ::playByType)
 
         // 뷰 진입시 재생
-        playByType()
+        //playByType()
     }
 
     private fun playByType(id: String = panodetailId) {
+        videoView?.visibility = View.INVISIBLE
+        pictureView?.visibility = View.GONE
+
         //panodetailId 로 PanoDetail 찾기
         val panoDetail = playList.firstOrNull { it.panodetailId == id }
 
