@@ -4,7 +4,6 @@ import android.util.Log
 import android.webkit.JavascriptInterface
 import androidx.fragment.app.FragmentManager
 import org.sample.sampleTest.data.PanoDetail
-import org.sample.sampleTest.ui.BottomSheetView
 import org.sample.sampleTest.ui.space.BottomPlayerView
 
 class SpaceBridge(private val playList: List<PanoDetail>, private val fragmentManager: FragmentManager) {
@@ -27,6 +26,7 @@ class SpaceBridge(private val playList: List<PanoDetail>, private val fragmentMa
     }
 
 
+    // 웹뷰에서 클릭시 하단 플레이어 뷰 진입
     private fun showPlayer(panodetailId: String) {
         val bottomPlayerFragment = BottomPlayerView()
         bottomPlayerFragment.playList = playList
