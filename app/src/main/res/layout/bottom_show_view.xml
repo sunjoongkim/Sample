@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/imageMain"
+        android:layout_width="0dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        app:layout_constraintWidth_percent="0.75"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/imageSub1"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        app:layout_constraintWidth_percent="0.15"
+        app:layout_constraintLeft_toRightOf="@id/imageMain"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/imageSub2"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="6.25dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        app:layout_constraintWidth_percent="0.15"
+        app:layout_constraintLeft_toRightOf="@id/imageMain"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageSub1"
+        />
+
+    <ImageView
+        android:id="@+id/imageSub3"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="6.25dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        app:layout_constraintWidth_percent="0.15"
+        app:layout_constraintLeft_toRightOf="@id/imageMain"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageSub2"
+        />
+
+    <ImageView
+        android:id="@+id/imageSub4"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="6.25dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        app:layout_constraintWidth_percent="0.15"
+        app:layout_constraintLeft_toRightOf="@id/imageMain"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageSub3"
+        />
+
+    <ImageView
+        android:id="@+id/imageSub5"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="6.25dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        app:layout_constraintWidth_percent="0.15"
+        app:layout_constraintLeft_toRightOf="@id/imageMain"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageSub4"
+        />
+
+    <TextView
+        android:id="@+id/textTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="55dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="15dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageMain"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/textDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="55dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="15dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textTitle"
+        android:textSize="18sp"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
