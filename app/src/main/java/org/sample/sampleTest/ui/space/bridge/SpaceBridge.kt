@@ -5,8 +5,16 @@ import android.webkit.JavascriptInterface
 import android.widget.Toast
 import androidx.fragment.app.FragmentManager
 import org.sample.sampleTest.data.PanoDetail
+import org.sample.sampleTest.data.SpaceContent
+import org.sample.sampleTest.data.SpaceTTS
+import org.sample.sampleTest.define.Define
+import org.sample.sampleTest.service.ApiService
+import org.sample.sampleTest.service.RetrofitBuilder
 import org.sample.sampleTest.ui.space.BottomEmbedView
 import org.sample.sampleTest.ui.space.BottomPlayerView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class SpaceBridge(private val playList: List<PanoDetail>, private val fragmentManager: FragmentManager) {
 
@@ -47,7 +55,36 @@ class SpaceBridge(private val playList: List<PanoDetail>, private val fragmentMa
     @JavascriptInterface
     fun viewTts(tts_id: String) {
         Log.i("@@@@@", "viewTts(tts_id : $tts_id)")
-        Toast.makeText(fragmentManager, )
+
+        RetrofitBuilder.apiService.getTTS(Define.SELVERS_ACCESS_TOKEN, tts_id)
+            .enqueue(object : Callback<SpaceTTS> {
+
+                override fun onResponse(
+                    call: Call<SpaceTTS>,
+                    response: Response<SpaceTTS>
+                ) {
+
+                    Log.i("@@@@@", response.body().toString())
+
+                    var spaceTTS = response.body() as SpaceTTS
+
+                    // YoutubeList 추가 후 pictureList 추가
+                    panoDetailList.addAll(spaceContent.data.youtubeList)
+                    panoDetailList.addAll(spaceContent.data.pictureList)
+
+                    // 웹뷰 브릿지
+                    webView.addJavascriptInterface(SpaceBridge(panoDetailList, fragmentManager) , "spaceHandler")
+
+
+                }
+
+                override fun onFailure(call: Call<SpaceTTS>, t: Throwable) {
+                    Log.i("@@@@@", "onFailure : $t")
+
+                }
+
+            })
+        //Toast.makeText(fragmentManager, )
     }
 
 

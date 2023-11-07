@@ -1,6 +1,8 @@
 package org.sample.sampleTest.ui.space
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -36,7 +38,10 @@ class BottomEmbedView : BottomSheetDialogFragment() {
 
     override fun onResume() {
         super.onResume()
-        webView?.webViewClient = WebViewClient()
-        webView?.loadUrl(embedUrl)
+
+        Handler(Looper.getMainLooper()).post {
+            webView?.webViewClient = WebViewClient()
+            webView?.loadUrl(embedUrl)
+        }
     }
 }
