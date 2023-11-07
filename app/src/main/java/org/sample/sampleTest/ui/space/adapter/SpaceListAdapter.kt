@@ -1,5 +1,7 @@
 package org.sample.sampleTest.ui.space.adapter
 
+import android.content.Context
+import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -26,11 +28,16 @@ import org.sample.sampleTest.ui.BottomSheetView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.Locale
 
 // Space 리스트 Adapter
 class SpaceListAdapter(private val dataList: MutableList<Data>, private val pagerView: ViewPager2, private val fragmentManager: FragmentManager) :
-    RecyclerView.Adapter<SpaceListAdapter.ViewHolder>() {
+    RecyclerView.Adapter<SpaceListAdapter.ViewHolder>(), TextToSpeech.OnInitListener  {
 
+    private lateinit var tts: TextToSpeech
+    private lateinit var textTTS: String
+
+    var context: Context? = null
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageViewSpace : ImageView = itemView.findViewById(R.id.imageSpace)
@@ -41,8 +48,10 @@ class SpaceListAdapter(private val dataList: MutableList<Data>, private val page
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
+        context = parent.context
+        val view = LayoutInflater.from(context)
             .inflate(R.layout.space_item, parent, false)
+
         return ViewHolder(view)
     }
 
@@ -136,7 +145,7 @@ class SpaceListAdapter(private val dataList: MutableList<Data>, private val page
                     panoDetailList.addAll(spaceContent.data.pictureList)
 
                     // 웹뷰 브릿지
-                    webView.addJavascriptInterface(SpaceBridge(panoDetailList, fragmentManager) , "spaceHandler")
+                    webView.addJavascriptInterface(SpaceBridge(this@SpaceListAdapter, panoDetailList, fragmentManager) , "spaceHandler")
 
 
                 }
@@ -153,6 +162,28 @@ class SpaceListAdapter(private val dataList: MutableList<Data>, private val page
         val bottomSheetFragment = BottomSheetView()
         bottomSheetFragment.buttonText = buttonText
         bottomSheetFragment.show(fragmentManager, bottomSheetFragment.tag)
+    }
+
+    fun speakTTS(desc: String) {
+        // tts 객체 초기화
+        textTTS = desc
+        tts = TextToSpeech(context, this)
+    }
+
+    // tts 초기화 완료시 호출됨
+    override fun onInit(status: Int) {
+        if (status == TextToSpeech.SUCCESS) {
+            val result = tts.setLanguage(Locale.KOREA)
+
+            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Log.e("@@@@@", "지원하지 않는 언어입니다.")
+            } else {
+                Log.e("@@@@@", "TTS 초기화 완료.")
+                tts.speak(textTTS, TextToSpeech.QUEUE_FLUSH, null, "")
+            }
+        } else {
+            Log.e("@@@@@", "TTS 초기화 실패.")
+        }
     }
 
 

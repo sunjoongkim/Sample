@@ -1,9 +1,12 @@
 package org.sample.sampleTest.ui.space.bridge
 
+import android.content.Context
 import android.util.Log
+import android.view.View
 import android.webkit.JavascriptInterface
 import android.widget.Toast
 import androidx.fragment.app.FragmentManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.sample.sampleTest.data.PanoDetail
 import org.sample.sampleTest.data.SpaceContent
 import org.sample.sampleTest.data.SpaceTTS
@@ -12,11 +15,13 @@ import org.sample.sampleTest.service.ApiService
 import org.sample.sampleTest.service.RetrofitBuilder
 import org.sample.sampleTest.ui.space.BottomEmbedView
 import org.sample.sampleTest.ui.space.BottomPlayerView
+import org.sample.sampleTest.ui.space.BottomShowView
+import org.sample.sampleTest.ui.space.adapter.SpaceListAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SpaceBridge(private val playList: List<PanoDetail>, private val fragmentManager: FragmentManager) {
+class SpaceBridge(private val parent: SpaceListAdapter, private val playList: List<PanoDetail>, private val fragmentManager: FragmentManager) {
 
 
     // 웹뷰에서 사진 클릭
@@ -49,6 +54,9 @@ class SpaceBridge(private val playList: List<PanoDetail>, private val fragmentMa
     @JavascriptInterface
     fun viewShow(show_id: String) {
         Log.i("@@@@@", "viewShow(show_id : $show_id)")
+        val bottomShowFragment = BottomShowView()
+        bottomShowFragment.showId = show_id
+        bottomShowFragment.show(fragmentManager, bottomShowFragment.tag)
     }
 
     // TTS 클릭 ---------------------------------------------------------------------------------
@@ -63,28 +71,18 @@ class SpaceBridge(private val playList: List<PanoDetail>, private val fragmentMa
                     call: Call<SpaceTTS>,
                     response: Response<SpaceTTS>
                 ) {
-
-                    Log.i("@@@@@", response.body().toString())
-
                     var spaceTTS = response.body() as SpaceTTS
-
-                    // YoutubeList 추가 후 pictureList 추가
-                    panoDetailList.addAll(spaceContent.data.youtubeList)
-                    panoDetailList.addAll(spaceContent.data.pictureList)
-
-                    // 웹뷰 브릿지
-                    webView.addJavascriptInterface(SpaceBridge(panoDetailList, fragmentManager) , "spaceHandler")
-
-
+                    
+                    // tts desc 토스트 메시지 생성
+                    Toast.makeText(parent.context, spaceTTS.data.desc, Toast.LENGTH_LONG).show()
+                    parent.speakTTS(spaceTTS.data.desc)
                 }
 
                 override fun onFailure(call: Call<SpaceTTS>, t: Throwable) {
                     Log.i("@@@@@", "onFailure : $t")
-
                 }
 
             })
-        //Toast.makeText(fragmentManager, )
     }
 
 

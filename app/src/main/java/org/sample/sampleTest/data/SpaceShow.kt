@@ -9,7 +9,7 @@ data class SpaceShow(
     @SerializedName("data") val data: Show
 )
 
-data class  Show(
+data class Show(
     @SerializedName("title") val result: String,        // 제목
     @SerializedName("desc") val message: String,        // 내용
     @SerializedName("link_url") val linkUrl: String,    // URL

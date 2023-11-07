@@ -2,6 +2,7 @@ package org.sample.sampleTest.ui.space
 
 import android.content.Context
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -123,8 +124,5 @@ class SpaceFragment : Fragment() {
             }
         })
     }
-
-
-
 
 }

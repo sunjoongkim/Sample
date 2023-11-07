@@ -13,4 +13,12 @@
         <item name="android:statusBarColor">?attr/backgroundColor</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="BottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/FullHeightBottomSheet</item>
+    </style>
+
+    <style name="FullHeightBottomSheet" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:layout_height">match_parent</item>
+    </style>
 </resources>
