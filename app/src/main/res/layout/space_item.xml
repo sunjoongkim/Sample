@@ -50,4 +50,12 @@
         android:text="&lt; Back"
         android:visibility="invisible"/>
 
+    <WebView
+        android:id="@+id/webViewTest"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+        android:background="@color/black"
+        />
+
 </FrameLayout>

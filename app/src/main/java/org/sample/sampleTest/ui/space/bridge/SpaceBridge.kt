@@ -1,17 +1,13 @@
 package org.sample.sampleTest.ui.space.bridge
 
-import android.content.Context
 import android.util.Log
-import android.view.View
+import android.view.WindowManager
 import android.webkit.JavascriptInterface
 import android.widget.Toast
 import androidx.fragment.app.FragmentManager
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.sample.sampleTest.data.PanoDetail
-import org.sample.sampleTest.data.SpaceContent
 import org.sample.sampleTest.data.SpaceTTS
 import org.sample.sampleTest.define.Define
-import org.sample.sampleTest.service.ApiService
 import org.sample.sampleTest.service.RetrofitBuilder
 import org.sample.sampleTest.ui.space.BottomEmbedView
 import org.sample.sampleTest.ui.space.BottomPlayerView

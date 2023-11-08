@@ -31,6 +31,7 @@ class BottomEmbedView : BottomSheetDialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setStyle(STYLE_NORMAL, R.style.BottomSheetDialogTheme)
         return inflater.inflate(R.layout.bottom_embed_view, container, false)
     }
 
@@ -38,31 +39,18 @@ class BottomEmbedView : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         webView = view.findViewById(R.id.webView)
+
     }
 
     override fun onResume() {
         super.onResume()
 
-        webView?.webViewClient = object : WebViewClient() {
+        // 하단 뷰 크기 고정
+        val dialog = dialog as? BottomSheetDialog
+        val bottomSheet = dialog?.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+        bottomSheet?.layoutParams?.height = ViewGroup.LayoutParams.MATCH_PARENT
 
-            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                super.onPageStarted(view, url, favicon)
-                // 페이지 로딩이 시작될 때 호출
-                Log.e("@@@@@", "====> onPageStarted")
-            }
-
-            override fun onPageFinished(view: WebView?, url: String?) {
-                super.onPageFinished(view, url)
-                // 페이지 로딩이 끝났을 때 호출
-                Log.e("@@@@@", "====> onPageFinished : $url")
-            }
-
-            override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
-                super.onReceivedError(view, request, error)
-                // 페이지 로딩 중 에러가 발생했을 때 호출
-                Log.e("@@@@@", "====> onReceivedError : $error")
-            }
-        }
+        webView?.webViewClient = WebViewClient()
         val webSettings: WebSettings = webView!!.settings
         webSettings.javaScriptEnabled = true
         webSettings.domStorageEnabled = true

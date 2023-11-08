@@ -37,6 +37,8 @@ class SpaceListAdapter(private val dataList: MutableList<Data>, private val page
     private lateinit var tts: TextToSpeech
     private lateinit var textTTS: String
 
+    private lateinit var webView1: WebView
+
     var context: Context? = null
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -45,6 +47,8 @@ class SpaceListAdapter(private val dataList: MutableList<Data>, private val page
         val webView: WebView = itemView.findViewById(R.id.webView)
         val btnExitWeb: Button = itemView.findViewById(R.id.btnExitWeb)
         val textMore: TextView = itemView.findViewById(R.id.textMore)
+
+        val webViewTest: WebView = itemView.findViewById(R.id.webViewTest)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -57,6 +61,8 @@ class SpaceListAdapter(private val dataList: MutableList<Data>, private val page
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val data = dataList[position]
+
+        val webViewTest = holder.webViewTest
 
         holder.textViewSpaceName.text = data.space_name
 
@@ -81,21 +87,9 @@ class SpaceListAdapter(private val dataList: MutableList<Data>, private val page
             btnExitWeb.setOnClickListener {
                 webView.visibility = View.INVISIBLE
                 btnExitWeb.visibility = View.INVISIBLE
-            }
 
-            // webview 화면에서 리스트 스크롤 되지 않도록 하는 리스너
-            webView.setOnTouchListener { _, event ->
-                when (event.action) {
-                    MotionEvent.ACTION_MOVE -> {
-                        // webview 드래그중엔 터치 이벤트 전달 금지
-                        pagerView.isUserInputEnabled = false
-                    }
-                    MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                        // 터치가 종료되거나 취소될 때 터치 이벤트 전달 금지 해제
-                        pagerView.isUserInputEnabled = true
-                    }
-                }
-                false
+                // 터치 이벤트 전달 금지 해제
+                pagerView.isUserInputEnabled = true
             }
 
 
@@ -110,6 +104,9 @@ class SpaceListAdapter(private val dataList: MutableList<Data>, private val page
             // 이미지 클릭시 웹뷰, 백버튼 보이게함
             webView.visibility = View.VISIBLE
             btnExitWeb.visibility = View.VISIBLE
+
+            // 터치 이벤트 전달 금지
+            pagerView.isUserInputEnabled = false
 
             // 이미지 클릭시 SpaceContent 리스트 가져오기
             getSpaceContentList(data, webView)
@@ -185,6 +182,5 @@ class SpaceListAdapter(private val dataList: MutableList<Data>, private val page
             Log.e("@@@@@", "TTS 초기화 실패.")
         }
     }
-
 
 }
